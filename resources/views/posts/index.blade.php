@@ -23,7 +23,39 @@
 
     <div class="container">
         <div class="row justify-content-center page-content">
-
+            @if($posts->isEmpty())
+                <h3 class="text-center">You have not created any post yet.</h3>
+            @else
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Created at</th>
+                            <th scope="col">Updated at</th>
+                            <th scope="col">Deleted at</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($posts as $post)
+                        <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $post->title }}</td>
+                            <td>{{ $post->created_at }}</td>
+                            <td>{{ $post->updated_at }}</td>
+                            <td>{{ $post->deleted_at }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm">Activate</button>
+                                <button class="btn btn-primary btn-sm">Deactivate</button>
+                                <button class="btn btn-primary btn-sm">Edit</button>
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 </x-app-layout>
