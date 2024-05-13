@@ -1,0 +1,11 @@
+.dashboard-link a {
+    text-decoration: none;
+}
+
+.dashboard-button button {
+    border: none !important;
+}
+
+.dashboard-button a {
+    text-decoration: none;
+}

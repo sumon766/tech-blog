@@ -14,4 +14,13 @@
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <a href="#" class="btn btn-lg btn-primary">Create New Post</a>
+                <a href="#" class="btn btn-lg btn-primary">See All Posts</a>
+            </div>
+        </div>
+    </div>
 </x-app-layout>
