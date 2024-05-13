@@ -26,7 +26,7 @@
             @if($posts->isEmpty())
                 <h3 class="text-center">You have not created any post yet.</h3>
             @else
-                <table class="table table-striped">
+                <table class="table table-striped posts-table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -46,10 +46,14 @@
                             <td>{{ $post->updated_at }}</td>
                             <td>{{ $post->deleted_at }}</td>
                             <td>
-                                <button class="btn btn-primary btn-sm">Activate</button>
-                                <button class="btn btn-primary btn-sm">Deactivate</button>
-                                <button class="btn btn-primary btn-sm">Edit</button>
-                                <button class="btn btn-danger btn-sm">Delete</button>
+                                @if($post->status === 0)
+                                    <a class="btn btn-primary btn-sm">Activate</a>
+                                @else
+                                    <a class="btn btn-primary btn-sm">Deactivate</a>
+                                @endif
+                                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary btn-sm">View</a>
+                                <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                         @endforeach

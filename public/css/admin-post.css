@@ -23,3 +23,8 @@ header div {
 .flash-close {
     font-size: 12px;
 }
+
+.posts-table {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
