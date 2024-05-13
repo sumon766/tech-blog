@@ -15,7 +15,7 @@ class PostController extends Controller
     {
         //
         $user = auth()->user()->id;
-        $posts = Post::where('user_id', $user)->withTrashed()->latest()->get();
+        $posts = Post::where('user_id', $user)->latest()->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -82,6 +82,8 @@ class PostController extends Controller
     public function edit(string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -90,6 +92,41 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'image' => 'mimes:jpg,jpeg,png,bmp,tiff|max:4096',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $post = Post::findOrFail($id);
+
+        if ($request->has('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images', $imageName);
+            $post->image = 'storage/images/' . $imageName;
+        }
+        elseif (!$request->has('image') && !$post->image) {
+            $post->image = null;
+        }
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully');
+    }
+
+    public function updateStatus (Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+        $post->status = !$post->status;
+        $post->save();
+        return redirect()->route('posts.index')->with('success', 'Status updated successfully');
     }
 
     /**
@@ -98,5 +135,8 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }
 }

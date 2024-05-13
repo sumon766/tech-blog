@@ -28,35 +28,65 @@
             @else
                 <table class="table table-striped posts-table">
                     <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Created at</th>
-                            <th scope="col">Updated at</th>
-                            <th scope="col">Deleted at</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Created at</th>
+                        <th scope="col">Updated at</th>
+                        <th>Actions</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach($posts as $post)
+                    @foreach($posts as $post)
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>{{ $post->title }}</td>
                             <td>{{ $post->created_at }}</td>
                             <td>{{ $post->updated_at }}</td>
-                            <td>{{ $post->deleted_at }}</td>
                             <td>
                                 @if($post->status === 0)
-                                    <a class="btn btn-primary btn-sm">Activate</a>
+                                    <form class="status-update-form" action="{{ route('updateStatus', $post->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-primary btn-sm">Activate</button>
+                                    </form>
                                 @else
-                                    <a class="btn btn-primary btn-sm">Deactivate</a>
+                                    <form class="status-update-form" action="{{ route('updateStatus', $post->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-primary btn-sm">Deactivate</button>
+                                    </form>
                                 @endif
                                 <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                 <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary btn-sm">View</a>
-                                <a href="{{ route('posts.destroy', $post->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $post->id }}">
+                                    Delete
+                                </button>
+
+                                <div class="modal fade" id="deleteModal-{{ $post->id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $post->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Delete post</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5>Are you sure, you want to delete this post?</h5>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Confirm delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
-                        @endforeach
+                    @endforeach
                     </tbody>
                 </table>
             @endif

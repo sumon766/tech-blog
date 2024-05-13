@@ -28,3 +28,13 @@ header div {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
 }
+
+.current-post-image {
+    height: 100px;
+    width: 100px;
+}
+
+.status-update-form {
+    float: left;
+    margin-right: 4px;
+}
