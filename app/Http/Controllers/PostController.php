@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -12,6 +14,8 @@ class PostController extends Controller
     public function index()
     {
         //
+
+        return view('posts.index');
     }
 
     /**
@@ -20,6 +24,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
     }
 
     /**
@@ -28,6 +33,38 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+            'image' => 'mimes:jpg,jpeg,png,bmp,tiff|max:4096',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $post = new Post();
+        $post->title = $request->title;
+        $post->body = $request->body;
+
+        if ($request->has('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images', $imageName);
+            $post->image = 'storage/images/' . $imageName;
+        }
+
+        if ($request->has('status')) {
+            $post->status = $request->status;
+        }
+        else {
+            $post->status = 0;
+        }
+
+        $post->user_id = auth()->user()->id;
+        $post->save();
+
+        return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 
     /**

@@ -9,3 +9,17 @@
 .dashboard-button a {
     text-decoration: none;
 }
+
+header div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-content {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.flash-close {
+    font-size: 12px;
+}
