@@ -40,7 +40,7 @@
 
                     <div class="col-md-2 button-mt">
                         <button type="submit" class="btn btn-primary btn-sm">Apply filter</button>
-                        <button type="reset" class="btn btn-primary btn-sm">Reset</button>
+                        <a href="{{ route('posts.index') }}" class="btn btn-primary btn-sm">Reset</a>
                     </div>
                 </div>
             </form>
