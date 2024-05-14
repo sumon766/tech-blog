@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -138,5 +139,20 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
+    }
+
+    public function filter(Request $request)
+    {
+        $request->validate([
+            'startDate' => 'required|date',
+            'endDate' => 'required|date|after_or_equal:startDate',
+        ]);
+
+        $startDate = Carbon::parse($request->startDate)->startOfDay();
+        $endDate = Carbon::parse($request->endDate)->endOfDay();
+
+        $posts = Post::whereBetween('created_at', [$startDate, $endDate])->get();
+
+        return view('posts.index', compact('posts'));
     }
 }
