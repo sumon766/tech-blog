@@ -51,4 +51,10 @@ class HomeController extends Controller
 
         return view('home', compact('posts', 'users'));
     }
+
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+        return view('show', compact('post'));
+    }
 }

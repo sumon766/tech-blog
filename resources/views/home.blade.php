@@ -98,7 +98,7 @@
                             <img class="img-thumbnail rounded mx-auto" src="{{ asset($post->image) }}" alt="Post Image">
                             <h2>{{ $post->title }}</h2>
                             <p>{{ substr($post->body, 0, 130) }}...</p>
-                            <a class="btn btn-sm btn-primary" href="#">Read more</a>
+                            <a class="btn btn-sm btn-primary" href="{{ route('show', $post->id) }}">Read more</a>
                         </article>
                     </div>
                 @endforeach

@@ -14,6 +14,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/home-filter', [HomeController::class, 'filter'])->name('home.filter');
+Route::get('show/{id}', [HomeController::class, 'show'])->name('show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,7 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts',PostController::class);
     Route::put('/posts/{id}/status', [PostController::class, 'updateStatus'])->name('updateStatus');
     Route::get('posts-filter', [PostController::class, 'filter'])->name('posts.filter');
-    Route::get('/home-filter', [HomeController::class, 'filter'])->name('home.filter');
 });
 
 require __DIR__.'/auth.php';
