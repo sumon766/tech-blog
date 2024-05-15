@@ -151,7 +151,9 @@ class PostController extends Controller
         $startDate = Carbon::parse($request->startDate)->startOfDay();
         $endDate = Carbon::parse($request->endDate)->endOfDay();
 
-        $posts = Post::whereBetween('created_at', [$startDate, $endDate])->get();
+        $user = auth()->user()->id;
+
+        $posts = Post::where('user_id', $user)->whereBetween('created_at', [$startDate, $endDate])->get();
 
         return view('posts.index', compact('posts'));
     }

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts',PostController::class);
     Route::put('/posts/{id}/status', [PostController::class, 'updateStatus'])->name('updateStatus');
     Route::get('posts-filter', [PostController::class, 'filter'])->name('posts.filter');
+    Route::get('/home-filter', [HomeController::class, 'filter'])->name('home.filter');
 });
 
 require __DIR__.'/auth.php';
